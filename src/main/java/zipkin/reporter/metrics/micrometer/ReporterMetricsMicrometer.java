@@ -45,7 +45,8 @@ public class ReporterMetricsMicrometer implements ReporterMetrics {
     Counter counter = null;
     if (!messagesDroppedWithCause.containsKey(throwable.getClass())) {
       counter = messagesDroppedWithCause.putIfAbsent(throwable.getClass(), meterRegistry.counter("messages.dropped","cause", throwable.getClass().getSimpleName()));
-    } else {
+    }
+    if (counter == null) {
       counter = messagesDroppedWithCause.get(throwable.getClass());
     }
     counter.increment();
